@@ -24,11 +24,24 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
           <input type='text' className='bg-transparent border-none outline-none text-white text-sm flex-1' placeholder='Search User'/>
         </div>
       </div> 
-      <div className='flex flex-col bg-amber-500 h-full rounded-2xl'>
-        
+      <div className='flex flex-col bg-transparent h-full rounded-2xl'>
+        {userDummyData.map((user,index) => {
+          return (
+          <div onClick = {() => {setSelectedUser(user)}} className={`relative flex items-center gap-2 rounded cursor-pointer text-white p-2 ${selectedUser?._id === user._id && 'bg-[#282142]/50'}`} key={index}>
+            <img className='rounded-full w-16 h-16 pb-2' src={user?.profilePic || assets.avatar_icon} alt="" />
+            <div className='pl-2 flex flex-col leading-5'>
+              <p>{user.fullName}</p>
+              {
+                index < 3 ? 
+                <span className='text-green-500 text-xs'>Online</span> : <span className='text-xs'>Offline</span>
+              }
+            </div>
+            {index > 2 && <p className='absolute top-4 right-4 rounded-full h-5 w-5 bg-violet-600 flex justify-center items-center'>{index}</p>}
+          </div> )
+        })}
       </div> 
     </div>
-  );
+  );;
 };
 
 export default Sidebar;
