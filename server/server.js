@@ -14,7 +14,7 @@ const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {origin:'*'}
 });
-
+const allowedOrigins = ['http://localhost:5173'];
 export const userSocketMap = {}; // { userId : socketId }
 
 io.on("connection", (socket)=>{
@@ -30,7 +30,10 @@ io.on("connection", (socket)=>{
 })
 
 app.use(express.json({limit:"4mb"}));
-app.use(cors());
+app.use(cors({
+  origin:allowedOrigins,
+  credentials:true
+}));
 app.use(cookieParser());
 
 app.use('/api/status',(req,res) => {

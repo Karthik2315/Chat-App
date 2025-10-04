@@ -4,7 +4,7 @@ import { generateToken } from '../lib/utils.js';
 import cloudinary from '../lib/cloudinary.js';
 
 export const signup = async(req,res) => {
-  const { fullName,email,password,bio } = res.body;
+  const { fullName,email,password,bio } = req.body;
   try {
     if(!fullName || !email || !password || !bio)
     {
@@ -13,17 +13,17 @@ export const signup = async(req,res) => {
         messsage:"Full details is not there"
       })
     }
-    const user = User.findOne({email:email});
+    const user = await User.findOne({email:email});
     if(user)
     {
       return res.status(401).json({
         success:false,
-        messsage:"User already exists"
+        message:"User already exists"
       });
     }
     const salt = await bcrypt.genSalt(10);
     const hashed_password = await bcrypt.hash(password,salt)
-    const newUser = User.create({
+    const newUser = await User.create({
       fullName,email,password:hashed_password,bio
     });
     const token = generateToken(newUser._id);
@@ -49,28 +49,28 @@ export const signup = async(req,res) => {
 
 export const login = async(req,res) => {
   try {
-    const {email,password} = res.body;
+    const {email,password} = req.body;
     if(!email || !password)
     {
       return res.status(401).json({
         success:false,
-        messsage:"Full details is not there"
+        message:"Full details is not there"
       })
     }
-    const userData = User.findOne({email});
+    const userData = await User.findOne({email});
     if(!userData)
     {
       return res.status(404).json({
         success:false,
-        messsage:"User does not exist"
+        message:"User does not exist"
       });
     }
-    const isPasswordCorrect = bcrypt.compare(password,userData.password);
+    const isPasswordCorrect = await bcrypt.compare(password,userData.password);
     if(!isPasswordCorrect)
     {
       return res.status(400).json({
         success:false,
-        messsage:"Incorrect credentials"
+        message:"Incorrect credentials"
       });
     }
     const token = generateToken(userData._id);
@@ -82,7 +82,7 @@ export const login = async(req,res) => {
     })
     return res.status(200).json({
       success:true,
-      messsage:"User logged in successfully",
+      message:"User logged in successfully",
       userData
     });
 
@@ -90,7 +90,7 @@ export const login = async(req,res) => {
     console.log(error.messsage);
     res.status(400).json({
       success:false,
-      messsage:error.messsage
+      message:error.messsage
     })
   }
 }
@@ -120,6 +120,22 @@ export const updateUserProfile = async(req,res) => {
   } catch (error) {
     console.log(error.messsage);
     res.status(400).json({
+      success:false,
+      messsage:error.messsage
+    })
+  }
+}
+
+export const logout = async(req,res) => {
+  try {
+    res.clearCookie("token",{
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    })
+  } catch (error) {
+    console.log(error.messsage);
+    res.status(500).json({
       success:false,
       messsage:error.messsage
     })

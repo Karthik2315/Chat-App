@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import assets from '../assets/assets'
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [currentState,setCurrentState] = useState('Sign Up');
@@ -9,6 +10,8 @@ const LoginPage = () => {
   const [password,setPassword] = useState('');
   const [isDataSubmitted,setisDataSubmitted] = useState(false);
 
+  const {login} = useContext(AuthContext);
+
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -17,6 +20,8 @@ const LoginPage = () => {
       setisDataSubmitted(true);
       return ;
     }
+
+    login(currentState==="Sign Up" ? "signup" : "login",{fullName,email,password,bio});
   }
 
   return (
@@ -56,7 +61,6 @@ const LoginPage = () => {
             <p className='text-sm'>Create an account? <span onClick={() => {setCurrentState('Sign Up');setisDataSubmitted(false)}}className=' cursor-pointer text-indigo-500 font-medium'>Click Here</span></p>
           )}
         </div>
-
       </form>
     </div>
   )
