@@ -12,17 +12,17 @@ export const MessageProvider = ({ children }) => {
   const [messages,setMessages] = useState([]);
   const [users,setUsers] = useState([]);
   const [selectedUser,setSelectedUser] = useState(null);
-  const [unseenMessges,setUnseenMessages] = useState({});
+  const [unseenMessages,setUnseenMessages] = useState({});
 
   const {socket,axios} = useContext(AuthContext);
 
   const getUsers = async() => {
     try {
-      const { data } = await axios.get('/api/message/users');
+      const { data } = await axios.get('/api/message/users',{withCredentials:true});
       if(data.success)
       {
         setUsers(data.users);
-        setUnseenMessages(data.unseenMessges)
+        setUnseenMessages(data.unseenMessages)
       }
 
     } catch (error) {
@@ -83,7 +83,7 @@ export const MessageProvider = ({ children }) => {
   },[socket,selectedUser]);
 
   const value = {
-    messages,users,selectedUser,getUsers,setMessages,getMessages,sendMessage,setSelectedUser,unseenMessges,setUnseenMessages
+    messages,users,selectedUser,getUsers,setMessages,getMessages,sendMessage,setSelectedUser,unseenMessages,setUnseenMessages
   }
 
   return (

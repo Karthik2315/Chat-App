@@ -8,7 +8,7 @@ export const getUserforSidebar = async(req,res) => {
     const userID = req.user._id;
     const filteredUsers = await User.find({_id:{$ne:userID}}).select("-password");
     const unseenMessages = {};
-    const promises = (await filteredUsers).map(async(user) => {
+    const promises = (filteredUsers).map(async(user) => {
       const messages = await message.find({senderId:user._id,recieverId:userID,seen:false});
       if(messages.length > 0)
       {
