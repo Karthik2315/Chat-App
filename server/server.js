@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 // intialize socket.io to sever
 export const io = new Server(server, {
-  cors: {origin:'*'}
+  cors: {origin:'https://chat-app-frontend-xi-pink-43.vercel.app'}
 });
 const allowedOrigins = ['http://localhost:5173','https://chat-app-frontend-xi-pink-43.vercel.app'];
 export const userSocketMap = {}; // { userId : socketId }
