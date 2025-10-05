@@ -32,7 +32,8 @@ export const MessageProvider = ({ children }) => {
 
   const getMessages = async(userId) => {
     try {
-      const { data } = await axios.get(`/api/message/${userId}`);
+      const { data } = await axios.get(`/api/message/users/${userId}`,{withCredentials:true});
+      console.log(data)
       if(data.success)
       {
         setMessages(data.messages)
@@ -44,7 +45,7 @@ export const MessageProvider = ({ children }) => {
 
   const sendMessage = async(messageData) => {
     try {
-      const { data } = await axios.post(`/api/message/${selectedUser._id}`,messageData);
+      const { data } = await axios.post(`/api/message/send/${selectedUser._id}`,messageData,{withCredentials:true});
       if(data.success)
       {
         setMessages((prevMessages)=> [...prevMessages,data.newMessage]);

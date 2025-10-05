@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import assets, { imagesDummyData } from '../assets/assets'
+import { MessageContext } from '../context/MessageContext'
+import { AuthContext } from '../context/AuthContext'
 
-const RightSideBar = ({ selectedUser,setSelectedUser }) => {
+const RightSideBar = () => {
+  const {selectedUser,messages} = useContext(MessageContext)
+  const {logout,onlineUsers} = useContext(AuthContext)
+  const [imgs,setImgs] = useState([]);
+  useEffect(() => {
+    setImgs(
+      messages.filter(msg=>msg.image).map(msg=>msg.image)
+    )
+  },[messages]);
   return (
     <div className={`bg-[#8185B2] text-white w-full relative overflow-y-scroll ${selectedUser ? "max:md-hidden" : ""}`}>
       <div className='pt-16 flex flex-col items-center gap-2 font-light text-xs mx-auto'>
@@ -16,7 +26,7 @@ const RightSideBar = ({ selectedUser,setSelectedUser }) => {
       <div className='px-5 text-xs'>
         <p>Media</p>
         <div className='mt-2 max-h-[200px] overflow-y-scroll grid grid-cols-2 gap-4 opacity-80'>
-          {imagesDummyData.map((url,index) =>{
+          {imgs.map((url,index) =>{
             return (
             <div key={index} onClick={() => window.open(url)} className='rounded cursor-pointer'>
               <img src={url} className='h-full rounded-md'/>
@@ -25,7 +35,7 @@ const RightSideBar = ({ selectedUser,setSelectedUser }) => {
           })}
         </div>
       </div>
-      <button className='absolute bottom-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-400 to-violet-600 w-[80%] rounded-2xl h-8 cursor-pointer'>
+      <button onClick={logout} className='absolute bottom-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-400 to-violet-600 w-[80%] rounded-2xl h-8 cursor-pointer'>
         Logout
       </button>
     </div>
