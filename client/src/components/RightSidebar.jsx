@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import assets, { imagesDummyData } from '../assets/assets'
+import assets from '../assets/assets'
 import { MessageContext } from '../context/MessageContext'
 import { AuthContext } from '../context/AuthContext'
 
@@ -13,7 +13,7 @@ const RightSideBar = () => {
     )
   },[messages]);
   return (
-    <div className={`bg-[#8185B2] text-white w-full relative overflow-y-scroll ${selectedUser ? "max:md-hidden" : ""}`}>
+    <div className={`bg-[#8185B2] text-white w-full relative overflow-y-scroll ${selectedUser ? "max-md:hidden" : ""}`}>
       <div className='pt-16 flex flex-col items-center gap-2 font-light text-xs mx-auto'>
         <img src={selectedUser?.profilePic || assets.avatar_icon} alt="" className='w-20 aspect-[1/1] rounded-full' />
         <h1 className='font-medium flex px-10 items-center gap-2 mx-2 text-xl '>
