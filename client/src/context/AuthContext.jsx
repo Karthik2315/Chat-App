@@ -14,17 +14,16 @@ export const AuthProvider = ({ children }) => {
   const [socket,setSocket] = useState(null);
   const checkAuth = async() => {
     try {
-        console.log("pussy")
         const { data } = await axios.get('/api/auth/check',{withCredentials:true});
         console.log(data)
         if(data.success) 
         {
           setAuthUser(data.user);
           connectSocket(data.user);
-          console.log("hei" + data.user);
+          console.log(data.user);
         }
     } catch (error) {
-      toast.error(error.message)
+      //toast.error(error.message)
     }
   };
 
@@ -79,7 +78,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async(body) => {
     try {
-      const { data } = await axios.put("/api/auth/update-profile",body);
+      const { data } = await axios.put("/api/auth/update-profile",body,{withCredentials:true});
       if(data.success)
       {
         setAuthUser(data.user);

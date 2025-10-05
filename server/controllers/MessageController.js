@@ -6,7 +6,7 @@ import { io,userSocketMap } from "../server.js";
 export const getUserforSidebar = async(req,res) => {
   try {
     const userID = req.user._id;
-    const filteredUsers = User.find({_id:{$ne:userID}}).select("-password");
+    const filteredUsers = await User.find({_id:{$ne:userID}}).select("-password");
     const unseenMessages = {};
     const promises = (await filteredUsers).map(async(user) => {
       const messages = await message.find({senderId:user._id,recieverId:userID,seen:false});
