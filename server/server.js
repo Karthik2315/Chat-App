@@ -14,7 +14,7 @@ const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {origin:'*'}
 });
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = ['http://localhost:5173','https://chat-app-frontend-xi-pink-43.vercel.app'];
 export const userSocketMap = {}; // { userId : socketId }
 
 io.on("connection", (socket)=>{
